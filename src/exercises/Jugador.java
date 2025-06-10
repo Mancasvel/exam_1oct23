@@ -72,7 +72,6 @@ public class Jugador implements Comparable<Jugador>{
 	}
 	public Boolean getMismaLesionConsecutiva() {
 		
-		List<String> acumulador = new ArrayList<>();
 		List<String> lesiones = this.getLesiones();
 		for(String lesion: lesiones) {
 			Integer positionAhora = lesiones.indexOf(lesion);
@@ -85,6 +84,8 @@ public class Jugador implements Comparable<Jugador>{
 		
 		return false;
 	}
+	
+	
 	@Override
 	public String toString() {
 		return "Jugador [nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", posicion="
