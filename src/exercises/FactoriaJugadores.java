@@ -1,5 +1,6 @@
 package exercises;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class FactoriaJugadores {
 		String equipo = partes[6].trim();
 		Integer clasificacion = Integer.valueOf(partes[7].trim());
 		String estadio = partes[8].trim();
+		
 		
 		return new Jugador(nombre, fechaNacimiento, posicion, goles, asistencias, lesiones, new Equipo(equipo, clasificacion, estadio));
 		
