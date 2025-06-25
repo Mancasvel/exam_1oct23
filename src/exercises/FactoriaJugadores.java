@@ -6,12 +6,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import utiles.Checkers;
+
 public class FactoriaJugadores {
 	
 	Jugador parseaJugador(String lineaCsv) {
 		String[] partes = lineaCsv.split(";");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		
+		Checkers.check("Formato no valido", partes.length==9);
 		String nombre = partes[0].trim();
 		LocalDate fechaNacimiento = LocalDate.parse(partes[1].trim(), formatter);
 		Posicion posicion = Posicion.valueOf(partes[2].trim());

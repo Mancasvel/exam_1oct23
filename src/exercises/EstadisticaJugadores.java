@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
+
 
 public class EstadisticaJugadores {
 	
@@ -37,62 +39,45 @@ public class EstadisticaJugadores {
 		return "EstadisticaJugadores [jugadores=" + jugadores + "]" + "\n";
 	}
 
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(jugadores);
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		EstadisticaJugadores other = (EstadisticaJugadores) obj;
-		return Objects.equals(jugadores, other.jugadores);
-	}
-
 	
 	public Long getNumeroLesionesDistintas(Integer umbralClasificacion) {
 		
 		return jugadores.stream()
-				.filter(jugador -> jugador.getEquipo().clasificacion() <= umbralClasificacion)
-				.map(jugador -> jugador.getLesiones())
+				.filter(jugador -> jugador.getEquipo().clasificacion() < umbralClasificacion)
+				.flatMap(jugador -> jugador.getLesiones().stream()) // asi se accede a la lista de dentro y se aplana teniendo todas las lesiones juntas
 				.distinct()
 				.count();
-		
 	}
 	
 	public List<String> getNJugadoresMasJovenesPosicionSinLesion(Posicion p, Integer n){
 		
-		return (List<String>) jugadores.stream()
-				.filter(jugador -> jugador.getPosicion().equals(p) && jugador.getLesiones().isEmpty())
-				.sorted(Comparator.comparing(jugador -> jugador.getEdad()))
-				.limit(n);
+		return  jugadores.stream()
+				.filter(jugador -> jugador.getPosicion().equals(p) &&
+						(jugador.getLesiones().size() == 0))
+				.sorted(Comparator.comparing(jugador -> jugador.getEdad()))  // se deja en orden natural por que quiero los mas jovenes
+				.limit(n)
+				.map(jugador -> jugador.getNombre())
+				.collect(Collectors.toList());
 		
 	}
 	public Equipo getEquipoMasJugadoresConGolesSuperiorMedia() {
-		Double mediaGoles = jugadores.stream()
+		Double golesMedia = jugadores.stream()
 				.mapToInt(jugador -> jugador.getGoles())
 				.average()
 				.orElse(0.0);
 		
-		// mapa equipo numero de jugadores por encima de la media
+		// mapa entrada equipo y valor cantidad de jugadores con mas goles que la media
 		
 		Map<Equipo, Long> equipoJugadores = jugadores.stream()
-				.filter(jugador -> jugador.getGoles()> mediaGoles)
-				.collect(Collectors.groupingBy(jugador -> ((Jugador) jugador).getEquipo(),
-						Collectors.counting()
-						));
+				.filter(jugador -> jugador.getGoles() > golesMedia)
+				.collect(Collectors.groupingBy(jugador -> jugador.getEquipo(),
+								Collectors.counting()));
+		
 		
 		return equipoJugadores.entrySet().stream()
-				.max(Comparator.comparing(j -> j.getValue()))
-				.get()
-				.getKey();
+				.max(Comparator.comparing(par -> par.getValue()))
+				.map(par -> par.getKey())
+				.orElseThrow(() -> new NoSuchElementException("No se encontro equipo"));
 	}
 	
 	public Boolean todosEquiposTienenJugadorLesionado() {
@@ -102,10 +87,8 @@ public class EstadisticaJugadores {
 						Collectors.summingLong(jugador -> jugador.getLesiones().size())
 						));
 		
-		return equipoJugadores.entrySet().stream()
-				.filter(equipo -> equipo.getValue().equals(0))
-				.findAny()
-				.isPresent();
+		return equipoJugadores.values().stream()
+				.allMatch(lesiones -> lesiones>= 1);
 				
 	}
 	

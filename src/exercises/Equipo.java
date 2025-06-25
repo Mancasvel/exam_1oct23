@@ -10,9 +10,5 @@ public record Equipo(String nombre, Integer clasificacion, String estadio) {
 		Checkers.check("La propiedad estadio debe comenzar por la cadena estadio", estadio.startsWith("Estadio"));
 	}
 
-	@Override
-	public String toString() {
-		return "Equipo [nombre=" + nombre + ", clasificacion=" + clasificacion + ", estadio=" + estadio + "]";
-	}
 
 }

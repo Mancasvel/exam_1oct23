@@ -17,25 +17,23 @@ public class Jugador implements Comparable<Jugador>{
 	private Integer asistencias;
 	private Equipo equipo;
 	private List<String> lesiones;
-	private Boolean campeon;
-	private Boolean MismaLesionConsecutiva;
+	
+	
 	public Jugador(String nombre, LocalDate fechaNacimiento, Integer edad, Posicion posicion, Integer goles,
-			Integer asistencias, Equipo equipo, List<String> lesiones, Boolean campeon,
-			Boolean mismaLesionConsecutiva) {
+			Integer asistencias, Equipo equipo, List<String> lesiones) {
 		super();
 		this.nombre = nombre;
+		Checkers.check("La fecha de nacimiento no puede ser anterior al 1970-01-01", !fechaNacimiento.isBefore(LocalDate.of(1970, 1, 1)));
 		this.fechaNacimiento = fechaNacimiento;
 		this.edad = edad;
 		this.posicion = posicion;
+		Checkers.check("Los goles y asistencias deben ser mayores o iguales a 0", (goles >= 0 && asistencias>= 0));
 		this.goles = goles;
 		this.asistencias = asistencias;
 		this.equipo = equipo;
 		this.lesiones = lesiones;
-		this.campeon = campeon;
-		MismaLesionConsecutiva = mismaLesionConsecutiva;
+
 		
-		Checkers.check("La fecha de nacimiento no puede ser anterior al 1970-01-01", !fechaNacimiento.isBefore(LocalDate.of(1970, 1, 1)));
-		Checkers.check("Los goles y asistencias deben ser mayores o iguales a 0", (goles >= 0 && asistencias>= 0));
 	}
 	public Jugador(String nombre2, LocalDate fechaNacimiento2, Posicion posicion2, Integer goles2, Integer asistencias2,
 			List<String> lesiones2, Equipo equipo2) {
@@ -62,13 +60,14 @@ public class Jugador implements Comparable<Jugador>{
 		return equipo;
 	}
 	public List<String> getLesiones() {
-		return lesiones;
+		return new ArrayList<>(lesiones);
 	}
 	public Boolean getCampeon() {
-		if(this.getPosicion().equals(1)) {
-			return true;
+		Boolean res = false;
+		if(this.getEquipo().clasificacion()==1) {
+			res = true;
 		}
-		return false;
+		return res;
 	}
 	public Boolean getMismaLesionConsecutiva() {
 		
@@ -86,16 +85,7 @@ public class Jugador implements Comparable<Jugador>{
 	}
 	
 	
-	@Override
-	public String toString() {
-		return "Jugador [nombre=" + nombre + ", fechaNacimiento=" + fechaNacimiento + ", edad=" + edad + ", posicion="
-				+ posicion + ", goles=" + goles + ", asistencias=" + asistencias + ", equipo=" + equipo + ", lesiones="
-				+ lesiones + ", campeon=" + campeon + ", MismaLesionConsecutiva=" + MismaLesionConsecutiva + "]";
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(fechaNacimiento, nombre);
-	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
