@@ -59,7 +59,7 @@ public class FactoriaJugadores {
 	    }
 
 	    Set<Jugador> jugadores = lineas.stream()
-	        .skip(1)
+	        .skip(1)  // saltamos la primera línea
 	        .map(String::trim)
 	        .filter(linea -> !linea.isEmpty())
 	        .map(factoria::parseaJugador)
