@@ -1,10 +1,16 @@
 package exercises;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import utiles.Checkers;
 
@@ -13,7 +19,6 @@ public class FactoriaJugadores {
 	Jugador parseaJugador(String lineaCsv) {
 		String[] partes = lineaCsv.split(";");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		
 		Checkers.check("Formato no valido", partes.length==9);
 		String nombre = partes[0].trim();
 		LocalDate fechaNacimiento = LocalDate.parse(partes[1].trim(), formatter);
@@ -26,7 +31,7 @@ public class FactoriaJugadores {
 		String estadio = partes[8].trim();
 		
 		
-		return new Jugador(nombre, fechaNacimiento, posicion, goles, asistencias, lesiones, new Equipo(equipo, clasificacion, estadio));
+		return new Jugador(nombre, fechaNacimiento, posicion, goles, asistencias, new Equipo(equipo, clasificacion, estadio), lesiones);
 		
 		
 	}
@@ -40,6 +45,26 @@ public class FactoriaJugadores {
 		}
 		
 		return res;
+	}
+
+	public static EstadisticaJugadores leeJugadores(String rutaFichero) {
+	    FactoriaJugadores factoria = new FactoriaJugadores();
+
+	    List<String> lineas;
+	    try {
+	        lineas = Files.readAllLines(Paths.get(rutaFichero));
+	    } catch (IOException e) {
+	        throw new RuntimeException("Error leyendo el archivo CSV", e);
+	    }
+
+	    Set<Jugador> jugadores = lineas.stream()
+	        .skip(1)
+	        .map(String::trim)
+	        .filter(linea -> !linea.isEmpty())
+	        .map(factoria::parseaJugador)
+	        .collect(Collectors.toSet());
+
+	    return new EstadisticaJugadores(jugadores);
 	}
 
 }

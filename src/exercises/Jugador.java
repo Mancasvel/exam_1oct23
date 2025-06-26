@@ -1,6 +1,7 @@
 package exercises;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -11,7 +12,6 @@ public class Jugador implements Comparable<Jugador>{
 	
 	private String nombre;
 	private LocalDate fechaNacimiento;
-	private Integer edad;
 	private Posicion posicion;
 	private Integer goles;
 	private Integer asistencias;
@@ -19,13 +19,12 @@ public class Jugador implements Comparable<Jugador>{
 	private List<String> lesiones;
 	
 	
-	public Jugador(String nombre, LocalDate fechaNacimiento, Integer edad, Posicion posicion, Integer goles,
+	public Jugador(String nombre, LocalDate fechaNacimiento, Posicion posicion, Integer goles,
 			Integer asistencias, Equipo equipo, List<String> lesiones) {
 		super();
 		this.nombre = nombre;
 		Checkers.check("La fecha de nacimiento no puede ser anterior al 1970-01-01", !fechaNacimiento.isBefore(LocalDate.of(1970, 1, 1)));
 		this.fechaNacimiento = fechaNacimiento;
-		this.edad = edad;
 		this.posicion = posicion;
 		Checkers.check("Los goles y asistencias deben ser mayores o iguales a 0", (goles >= 0 && asistencias>= 0));
 		this.goles = goles;
@@ -35,9 +34,6 @@ public class Jugador implements Comparable<Jugador>{
 
 		
 	}
-	public Jugador(String nombre2, LocalDate fechaNacimiento2, Posicion posicion2, Integer goles2, Integer asistencias2,
-			List<String> lesiones2, Equipo equipo2) {
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -45,7 +41,7 @@ public class Jugador implements Comparable<Jugador>{
 		return fechaNacimiento;
 	}
 	public Integer getEdad() {
-		return edad;
+		return Period.between(fechaNacimiento, LocalDate.now()).getYears();
 	}
 	public Posicion getPosicion() {
 		return posicion;
