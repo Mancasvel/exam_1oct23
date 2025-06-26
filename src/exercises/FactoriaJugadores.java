@@ -37,15 +37,16 @@ public class FactoriaJugadores {
 	}
 
 	private List<String> parseaLista(String lesiones) {
-		String limpio = lesiones.replace("[", "").replace("]", "");
-		String[] partes = limpio.split(",");
-		List<String> res = new ArrayList<>();
-		for (String p: partes) {
-			res.add(p);
-		}
-		
-		return res;
+	    String limpio = lesiones.replace("[", "").replace("]", "").trim();
+	    if (limpio.isEmpty()) return new ArrayList<>(); // Devuelve lista vacía si no hay lesiones
+	    String[] partes = limpio.split(",");
+	    List<String> res = new ArrayList<>();
+	    for (String p : partes) {
+	        res.add(p.trim());
+	    }
+	    return res;
 	}
+
 
 	public static EstadisticaJugadores leeJugadores(String rutaFichero) {
 	    FactoriaJugadores factoria = new FactoriaJugadores();

@@ -1,7 +1,10 @@
 package tests;
 
+import java.util.List;
+
 import exercises.EstadisticaJugadores;
 import exercises.FactoriaJugadores;
+import exercises.Posicion;
 
 public class Tests {
 	
@@ -15,10 +18,13 @@ public class Tests {
 		testJugadoresLesiones(jugadores, 6);
 		testJugadoresLesiones(jugadores, 2);
 		
-		
-		
+		System.out.println("Ejericio 4.2==================================================================");
+		testJugadoresMasJovenes(jugadores, Posicion.DELANTERO, 3);
+		testJugadoresMasJovenes(jugadores, Posicion.CENTROCAMPISTA, 3);
 		
 	}
+
+	
 
 	private static void testJugadoresLesiones(EstadisticaJugadores jugadores, int umbralLesiones) {
 		try {
@@ -35,6 +41,23 @@ public class Tests {
 			System.out.println(e);
 		}
 		
+	}
+	
+	private static void testJugadoresMasJovenes(EstadisticaJugadores jugadores, Posicion posicion, int i) {
+		try {
+			List<String> res = jugadores.getNJugadoresMasJovenesPosicionSinLesion(posicion, i);
+			String msg = "Los " +  i + " jugadores más jovenes sin lesión de la posición " + posicion + " son:";
+			
+			System.out.println(msg);
+			System.out.println(res);
+			
+	
+		}
+		catch(Exception e) {
+			
+			System.out.println(e);
+			System.out.println("Excepción producida");
+		}
 	}
 
 }

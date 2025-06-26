@@ -53,7 +53,7 @@ public class EstadisticaJugadores {
 		
 		return  jugadores.stream()
 				.filter(jugador -> jugador.getPosicion().equals(p) &&
-						(jugador.getLesiones().size() == 0))
+						(jugador.getLesiones().isEmpty()))
 				.sorted(Comparator.comparing(jugador -> jugador.getEdad()))  // se deja en orden natural por que quiero los mas jovenes
 				.limit(n)
 				.map(jugador -> jugador.getNombre())
