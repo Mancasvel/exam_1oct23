@@ -2,6 +2,7 @@ package tests;
 
 import java.util.List;
 
+import exercises.Equipo;
 import exercises.EstadisticaJugadores;
 import exercises.FactoriaJugadores;
 import exercises.Posicion;
@@ -22,9 +23,16 @@ public class Tests {
 		testJugadoresMasJovenes(jugadores, Posicion.DELANTERO, 3);
 		testJugadoresMasJovenes(jugadores, Posicion.CENTROCAMPISTA, 3);
 		
+		System.out.println("Ejercicio 4.3==================================================================");
+		testEquipoMasJugadoresConGolesSuperior(jugadores);
+		
+		
 	}
 
 	
+
+
+
 
 	private static void testJugadoresLesiones(EstadisticaJugadores jugadores, int umbralLesiones) {
 		try {
@@ -54,10 +62,29 @@ public class Tests {
 	
 		}
 		catch(Exception e) {
-			
-			System.out.println(e);
+
 			System.out.println("Excepción producida");
+			System.out.println(e);
 		}
 	}
+	
+	private static void testEquipoMasJugadoresConGolesSuperior(EstadisticaJugadores jugadores) {
+		try {
+			
+			Equipo res = jugadores.getEquipoMasJugadoresConGolesSuperiorMedia();
+			String msg = "El equipo con mayor numero de jugadores con goles por encima de la media es:";
+			
+			System.out.println(msg + "\n" + res);
+			
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println("Excepcion inesperada:");
+			System.out.println(e);
+		}
+		
+	}
+
 
 }
