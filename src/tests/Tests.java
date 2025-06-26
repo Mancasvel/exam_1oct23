@@ -1,6 +1,7 @@
 package tests;
 
 import java.util.List;
+import java.util.SortedMap;
 
 import exercises.Equipo;
 import exercises.EstadisticaJugadores;
@@ -28,14 +29,12 @@ public class Tests {
 		
 		System.out.println("Ejercicio 4.4=================================================================");
 		testTodosEquiposTienenJugadorLesionado(jugadores);
+		
+		System.out.println("Ejercicio 4.5==================================================================");
+		testNombreJugadorConMayorSuma(jugadores);
 	}
 
 	
-
-
-
-
-
 
 
 
@@ -111,6 +110,22 @@ public class Tests {
 	}
 	
 	
+	
+	private static void testNombreJugadorConMayorSuma(EstadisticaJugadores jugadores) {
+		try {
+			SortedMap<Equipo, String> res = jugadores.getNombreJugadorConMayorSumaGAPorEquipo();
+			String msg = "Los nombres de jugadores con mayor ratio goles/asistencias por equipo son:";
+			
+			System.out.println(msg + "\n" + res);
+			
+		}
+		catch(Exception e) {
+			
+			System.out.println("Excepcion inesperada: ");
+			System.out.println(e);
+			
+		}
+	}
 
 
 }

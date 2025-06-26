@@ -92,15 +92,36 @@ public class EstadisticaJugadores {
 				
 	}
 	
-	public SortedMap<Equipo, String> getNombreJugadorConMayorSumaGAPorEquipo(){
+	public SortedMap<Equipo, String> getNombreJugadorConMayorSumaGAPorEquipo() {
 		
-		return jugadores.stream()
-				.collect(Collectors.groupingBy(jugador -> jugador.getEquipo(),
-						() -> new TreeMap<Equipo, String>(),
-						Collectors.collectingAndThen(
-								Collectors.maxBy(Comparator.comparing(j -> j.getGoles() + j.getAsistencias())), 
-								opt -> opt.map(o -> o.getNombre()).orElse("No hay jugador con más asistencias y goles.")
-						)
-						));
+		SortedMap<Equipo, String> resultado = new TreeMap<>(
+			    Comparator.comparingInt(Equipo::clasificacion).reversed()
+			);
+
+
+	    Map<Equipo, Jugador> mejoresPorEquipo = new HashMap<>();
+
+	    for (Jugador jugador : jugadores) {
+	        Equipo equipo = jugador.getEquipo();
+	        int sumaGA = jugador.getGoles() + jugador.getAsistencias();
+
+	        if (!mejoresPorEquipo.containsKey(equipo)) {
+	            mejoresPorEquipo.put(equipo, jugador);
+	        } else {
+	            Jugador actual = mejoresPorEquipo.get(equipo);
+	            int actualGA = actual.getGoles() + actual.getAsistencias();
+
+	            if (sumaGA > actualGA) {
+	                mejoresPorEquipo.put(equipo, jugador);
+	            }
+	        }
+	    }
+
+	    for (Map.Entry<Equipo, Jugador> entry : mejoresPorEquipo.entrySet()) {
+	        resultado.put(entry.getKey(), entry.getValue().getNombre());
+	    }
+
+	    return resultado;
 	}
+
 }
