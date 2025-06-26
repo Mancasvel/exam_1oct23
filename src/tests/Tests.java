@@ -26,10 +26,17 @@ public class Tests {
 		System.out.println("Ejercicio 4.3==================================================================");
 		testEquipoMasJugadoresConGolesSuperior(jugadores);
 		
-		
+		System.out.println("Ejercicio 4.4=================================================================");
+		testTodosEquiposTienenJugadorLesionado(jugadores);
 	}
 
 	
+
+
+
+
+
+
 
 
 
@@ -85,6 +92,25 @@ public class Tests {
 		}
 		
 	}
+	
+
+	private static void testTodosEquiposTienenJugadorLesionado(EstadisticaJugadores jugadores) {
+		try {
+			
+			Boolean res = jugadores.todosEquiposTienenJugadorLesionado();
+			String msg = "¿Todos los equipos tienen al menos un jugador que ha sufrido una lesion?";
+			
+			System.out.println(msg + "\n" + res);
+			
+		}
+		catch(Exception e) {
+			System.out.println("Excepcion inesperada: ");
+			System.out.println(e);
+			
+		}
+	}
+	
+	
 
 
 }
